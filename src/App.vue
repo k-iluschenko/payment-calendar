@@ -189,7 +189,7 @@ const getData = (id: number): IData => {
 <template>
   <header>
     <div class="wrapper">
-      <v-calendar :columns="$screens({ default: 1, lg: 4 })" :rows="$screens({ default: 1, lg: 2 })"
+      <v-calendar :columns="4" :rows="2"
         :attributes='attrs' />
     </div>
   </header>
