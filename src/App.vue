@@ -183,10 +183,16 @@ const getData = (id: number): IData => {
   return data
 }
 
+const get = () => {
+  const res = fetch('https://silver-elk-toga.cyclic.app/')
+  console.log(res)
+}
+
 
 </script>
 
 <template>
+  <span @click="get">test request</span>
   <header>
     <div class="wrapper">
       <v-calendar :columns="4" :rows="2"
