@@ -2,8 +2,8 @@
   "name": "payment-calendar",
   "version": "0.0.0",
   "scripts": {
-    "dev:frontend": "nx dev frontend",
-    "build:frontend": "nx build frontend"
+    "dev": "nx dev frontend",
+    "build": "nx build frontend"
   },
   "devDependencies": {
     "nx": "^14.7.11"
