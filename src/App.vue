@@ -183,9 +183,12 @@ const getData = (id: number): IData => {
   return data
 }
 
-const get = () => {
-  const res = fetch('https://silver-elk-toga.cyclic.app/')
-  console.log(res)
+const get = async () => {
+  const res = await fetch('https://silver-elk-toga.cyclic.app/')
+  const json = await res.json()
+
+  console.log(json);
+
 }
 
 
