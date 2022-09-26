@@ -69,16 +69,17 @@ const dates: IDates = Object.keys(data).reduce((obj: IDates, key: string) => {
 
 
 const startMonth = 9 // Сентябрь
-const currentMonth = getMonth(new Date())
-const currentYear = getYear(new Date())
-const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth))
+const nowMonth = getMonth(new Date())
+const nowYear = getYear(new Date())
+
+const daysInMonth = getDaysInMonth(new Date(nowYear, nowMonth))
 
 const datesList: IDates = {}
 
-for (let month = startMonth - 1; month <= currentMonth + 2; month++) {
+for (let month = startMonth - 1; month <= nowMonth + 2; month++) {
   datesList[month] = []
   for (let i = 1; i <= daysInMonth; i++) {
-    const d: Date = new Date(currentYear, month, i);
+    const d: Date = new Date(nowYear, month, i);
     if (isWednesday(d) || isSaturday(d))
       datesList[month].push(format(d, 'yyyy-MM-dd'))
   }
@@ -131,11 +132,6 @@ const visited = {
 const unPaid = {
   highlight: colors.unPaid,
   dates: dates.unPaid,
-  // dates: {
-  //   start: new Date(2022, 9 - 1, 17),
-  //   end: new Date(2023, 7 - 1, 31),
-  //   weekdays: [4, 7]
-  // },
   popover: {
     label: status.unPaid,
   },
@@ -146,13 +142,6 @@ const unPaid = {
     ...dates.postponed
   ]
 }
-
-// const lessonsCount = {
-//   paid: ,
-//   unPaid: ,
-//   visited: ,
-//   missed: ,
-// }
 
 const attrs = [
   paid,
@@ -171,11 +160,11 @@ const getData = (id: number): IData => {
     postponed: []
   }
   switch (id) {
-    case 8: data = { ...data09 };
+    case 9: data = { ...data09 };
       break;
-    case 9: data = {...data10};
+    case 10: data = { ...data10 };
       break;
-    case 10: data = {...data11};
+    case 11: data = { ...data11 };
       break;
     default: data
   }
@@ -185,72 +174,53 @@ const getData = (id: number): IData => {
 const get = async () => {
   const res = await fetch('https://silver-elk-toga.cyclic.app/')
   const json = await res.json()
-
-  console.log(json);
-
 }
 
+let currentMonth = ref(0)
+let currentYear = ref(0)
+const CurrentMonthYear = (page: { month: number, year: number }): void => {
+  currentMonth.value = page.month
+  currentYear.value = page.year
+}
+
+let isShow = ref(false)
+const isShowHandler = (): void => {
+  isShow.value = !isShow.value
+}
 
 </script>
 
 <template>
-  <span @click="get">test request</span>
-  <header>
-    <div class="wrapper">
-      <v-calendar :columns="2"
-        :attributes='attrs' />
-    </div>
-  </header>
-
-  <!-- <RouterView /> -->
-  <div :style="{'display': 'flex'}">
-    <div v-for="dates of datesList" :key="dates.toString()" :style="{'margin-right': '20px'}">
-      {{monthList[getMonth(new Date(dates[0]))]}} ({{900 * getData(getMonth(new
-      Date(dates[0])))['paid'].length}}р.)
-      <div v-for="key of Object.keys(status)" :key="key">
-        <span :style="{display: 'inline-block', width: '10px', height: '10px', backgroundColor: colors[key]}"></span>
-        {{status[key]}} : {{getData(getMonth(new Date(dates[0])))[key].length }}
-        <p v-for="date of getData(getMonth(new Date(dates[0])))[key]" :key="date.toString()">{{format(new
-        Date(date), 'dd.MM.yyyy')}}</p>
+  <!-- <span @click="get">test request</span> -->
+  <div class="wrapper">
+    <section class="calendar">
+      <v-calendar :attributes='attrs' @update:from-page="CurrentMonthYear" />
+    </section>
+    <section :style="{'display': 'flex'}">
+      <div :style="{'margin-right': '20px'}">
+        {{monthList[currentMonth]}} ({{900 * getData(currentMonth)['paid'].length}}р.)
+        <div v-for="key of Object.keys(status)" :key="key" @click="isShowHandler">
+          <span :style="{display: 'inline-block', width: '10px', height: '10px', backgroundColor: colors[key]}"></span>
+          {{status[key]}} : {{getData(currentMonth)[key].length }}
+          <div v-show="isShow" class="dates">
+            <p v-for="date of getData(currentMonth)[key]" :key="date.toString()">{{format(new
+          Date(date), 'dd.MM.yyyy')}}</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
-
 
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style scoped lang="scss">
+.wrapper {
+  display: flex;
+  align-items: start;
 }
 
-
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.calendar {
+  margin-right: 20px;
 }
+
 </style>
