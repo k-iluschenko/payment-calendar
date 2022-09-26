@@ -56,7 +56,6 @@ const data09: IData = dataRaw09
 const data10: IData = dataRaw10
 const data11: IData = dataRaw11
 
-
 const data: IData = Object.keys(dataRaw09).reduce((obj: IData, key: string) => {
   obj[key] = [...data09[key], ...data10[key], ...data11[key]]
   return obj
@@ -198,7 +197,7 @@ const get = async () => {
   <span @click="get">test request</span>
   <header>
     <div class="wrapper">
-      <v-calendar :columns="4" :rows="2"
+      <v-calendar :columns="2"
         :attributes='attrs' />
     </div>
   </header>
