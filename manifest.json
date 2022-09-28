@@ -1,6 +1,6 @@
 {
-    "name": "pwa-test",
-    "short_name": "pwa-test",
+    "name": "pwa-payment-calendar",
+    "short_name": "pwa-ps",
     "theme_color": "#4DBA87",
     "icons": [
       {
