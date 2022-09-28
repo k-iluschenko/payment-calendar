@@ -7,6 +7,7 @@ import { format, getMonth, getYear, getDaysInMonth, isSaturday, isWednesday } fr
 import dataRaw09 from './data/09.json'
 import dataRaw10 from './data/10.json'
 import dataRaw11 from './data/11.json'
+import ReloadPWA from './ReloadPWA.vue'
 
 interface IStatuses {
   [key: string]: string;
@@ -192,6 +193,7 @@ const isShowHandler = (): void => {
 
 <template>
   <!-- <span @click="get">test request</span> -->
+  <ReloadPWA/>
   <div class="wrapper">
     <section class="calendar">
       <v-calendar :attributes='attrs' @update:from-page="CurrentMonthYear" />
