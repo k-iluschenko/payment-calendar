@@ -9,6 +9,8 @@ import router from "./router";
 
 import "./assets/main.css";
 
+import './registerServiceWorker';
+
 const app = createApp(App);
 
 app.use(createPinia());
