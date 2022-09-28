@@ -17,31 +17,37 @@ export default defineConfig({
       includeAssets: ["/favicon.png"],
       strategies: "injectManifest",
       manifest: {
-        name: "Test Project",
-        short_name: "Test",
-        theme_color: "#ffffff",
-        start_url: "/",
-        display: "standalone",
-        background_color: "#ffffff",
+        name: "pwa-payment-calendar",
+        short_name: "pwa-ps",
+        theme_color: "#4DBA87",
         icons: [
           {
-            src: "icon-192.png",
+            src: "./img/icons/android-chrome-192x192.png",
+            sizes: "192x192",
+            type: "image/png"
+          },
+          {
+            src: "./img/icons/android-chrome-512x512.png",
+            sizes: "512x512",
+            type: "image/png"
+          },
+          {
+            src: "./img/icons/android-chrome-maskable-192x192.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "maskable"
           },
           {
-            src: "/icon-512.png",
+            src: "./img/icons/android-chrome-maskable-512x512.png",
             sizes: "512x512",
             type: "image/png",
-          },
-          {
-            src: "icon-512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
-          },
+            purpose: "maskable"
+          }
         ],
-      },
+        start_url: ".",
+        display: "standalone",
+        background_color: "#000000"
+      }
     }),
   ],
   css: {
