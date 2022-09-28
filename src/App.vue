@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { colors, STATUSES, monthList } from './data/constants'
-import { RouterView } from 'vue-router'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { format, getMonth, getYear, getDaysInMonth, isSaturday, isWednesday } from 'date-fns'
 
 import dataRaw09 from './data/09.json'
 import dataRaw10 from './data/10.json'
 import dataRaw11 from './data/11.json'
 import ReloadPWA from './ReloadPWA.vue'
-
-interface IStatuses {
-  [key: string]: string;
-}
+import StatusesList from './components/StatusesList.vue'
+import type { IStatuses, IData } from '@/types'
+import Title from './components/Title.vue'
 
 type DateType = Date | string
 interface IDates {
@@ -24,10 +22,6 @@ type Data = {
   visited: string[];
   missed: string[];
   postponed: string[];
-}
-
-interface IData {
-  [key: string]: Array<string>
 }
 
 // const timer = setInterval(() => {
@@ -184,31 +178,21 @@ const CurrentMonthYear = (page: { month: number, year: number }): void => {
   currentYear.value = page.year
 }
 
-let isShow = ref(false)
-const isShowHandler = (): void => {
-  isShow.value = !isShow.value
-}
-
 </script>
 
 <template>
   <!-- <span @click="get">test request</span> -->
-  <ReloadPWA/>
+  <ReloadPWA />
   <div class="wrapper">
     <section class="calendar">
       <v-calendar :attributes='attrs' @update:from-page="CurrentMonthYear" />
     </section>
     <section :style="{'display': 'flex'}">
       <div :style="{'margin-right': '20px'}">
-        {{monthList[currentMonth]}} ({{900 * getData(currentMonth)['paid'].length}}р.)
-        <div v-for="key of Object.keys(status)" :key="key" @click="isShowHandler">
-          <span :style="{display: 'inline-block', width: '10px', height: '10px', backgroundColor: colors[key]}"></span>
-          {{status[key]}} : {{getData(currentMonth)[key].length }}
-          <div v-show="isShow" class="dates">
-            <p v-for="date of getData(currentMonth)[key]" :key="date.toString()">{{format(new
-          Date(date), 'dd.MM.yyyy')}}</p>
-          </div>
-        </div>
+        <Title>
+          {{monthList[currentMonth]}} ({{900 * getData(currentMonth)['paid'].length}}р.)
+        </Title>
+        <StatusesList :statuses='status' :lessonsList="getData(currentMonth)"></StatusesList>
       </div>
     </section>
   </div>
@@ -216,12 +200,13 @@ const isShowHandler = (): void => {
 </template>
 
 <style scoped lang="scss">
-.wrapper {
-  // display: flex;
-}
-
 .calendar {
-  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
