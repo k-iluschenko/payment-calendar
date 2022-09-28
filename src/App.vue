@@ -217,7 +217,7 @@ const isShowHandler = (): void => {
 
 <style scoped lang="scss">
 .wrapper {
-  display: flex;
+  // display: flex;
 }
 
 .calendar {
