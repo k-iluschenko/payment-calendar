@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { colors, STATUSES, monthList } from './data/constants'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { format, getMonth, getYear, getDaysInMonth, isSaturday, isWednesday } from 'date-fns'
 
 import dataRaw09 from './data/09.json'
@@ -152,7 +152,7 @@ const getData = (id: number): IData => {
     unPaid: [],
     visited: [],
     missed: [],
-    postponed: []
+    postponed: [],
   }
   switch (id) {
     case 9: data = { ...data09 };
@@ -178,6 +178,13 @@ const CurrentMonthYear = (page: { month: number, year: number }): void => {
   currentYear.value = page.year
 }
 
+watch(currentMonth, (currentMonth) => {
+  totalCost.value = 900 * getData(currentMonth)['paid'].length
+  
+})
+let totalCost = ref(900 * getData(currentMonth.value)['paid'].length)
+
+
 </script>
 
 <template>
@@ -190,7 +197,8 @@ const CurrentMonthYear = (page: { month: number, year: number }): void => {
     <section :style="{'display': 'flex'}">
       <div :style="{'margin-right': '20px'}">
         <Title>
-          {{monthList[currentMonth]}} ({{900 * getData(currentMonth)['paid'].length}}р.)
+          {{monthList[currentMonth]}}
+          <span>(Оплачено {{totalCost}}р.)</span>
         </Title>
         <StatusesList :statuses='status' :lessonsList="getData(currentMonth)"></StatusesList>
       </div>
